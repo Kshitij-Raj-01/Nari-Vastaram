@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_BASE_URL = "https://narivastaram.com"
+export const API_BASE_URL = "http://69.62.82.138:5454"
 
 const jwt = sessionStorage.getItem("jwt")
 
