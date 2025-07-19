@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_BASE_URL = "https://nari-vastaram-backend.onrender.com"
+export const API_BASE_URL = "https://narivastaram.com"
 
 const jwt = sessionStorage.getItem("jwt")
 
