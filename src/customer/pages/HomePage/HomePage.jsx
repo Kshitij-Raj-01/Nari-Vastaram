@@ -14,7 +14,7 @@ function HomePage() {
         const res = await axios.get(`${API_BASE_URL}/api/products`, {
           params: { category: 'All Kurtis', pageSize: 20 }
         });
-        setProducts(res.data.content);
+        setProducts(res?.data?.content || []);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
