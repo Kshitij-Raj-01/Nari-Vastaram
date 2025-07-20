@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import AddressCard from "../AddressCard";
+import AddressCard from "../AddressCard/AddressCard";
 import { Box, Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../State/Auth/Action";
