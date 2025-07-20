@@ -1,102 +1,144 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import { Box, Button, Grid, TextField } from "@mui/material";
+import React from "react";
 import AddressCard from "../AddressCard/AddressCard";
-import { Box, Button, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../State/Auth/Action";
 import { useNavigate } from "react-router-dom";
 
 const DeliveryAddressForm = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
-  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
-
-useEffect(() => {
-  const jwt = sessionStorage.getItem("jwt");
-  if (jwt) {
-    dispatch(getUser(jwt));
-  }
-}, [dispatch]);
-
+  const navigate = useNavigate();
+  const auth = useSelector(store=>store.auth);
+  console.log("auth : ",auth.user)
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-
     const address = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      streetAddress: data.get("address"),
-      city: data.get("city"),
-      state: data.get("state"),
-      pinCode: data.get("postal"),
-      mobile: data.get("phoneNumber"),
-    };
+      firstName : data.get("firstName"),
+      lastName : data.get('lastName'),
+      streetAddress : data.get('address'),
+      city : data.get('city'),
+      state : data.get('state'),
+      pinCode : data.get('postal'),
+      mobile : data.get('phoneNumber')
+    }
+    const orderData = {address, navigate}
+    console.log("Address : ", address)
+  }
 
-    navigate("/order/summary", { state: { address } });
+  const handleDeliverToExistingAddress = (address) => {
+    const orderData = { address, navigate };
+    console.log("Using saved address:", address);
   };
-
-  const handleDeliverToExistingAddress = (address, index) => {
-    setSelectedAddressIndex(index);
-    navigate("/order/summary", { state: { address } });
-  };
-
+  
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-5">Saved Addresses</h1>
-      <div className="space-y-3 mb-10">
-        {auth?.user?.addresses?.length > 0 ? (
-          auth.user.addresses.map((address, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer rounded-md border ${
-                selectedAddressIndex === index
-                  ? "border-blue-500 ring-2 ring-blue-300"
-                  : "border-gray-200"
-              } p-4 shadow-md`}
-              onClick={() => handleDeliverToExistingAddress(address, index)}
+      <Grid container spacing={4}>
+        <Grid item sx={{ width: { lg: "40%" } }} className="border rounded-e-md shadow-md h-[30.5rem] w-full overflow-y-scroll bg-[#F1EDE1]">
+          <div className="p-5 py-7 border-b cursor-pointer">
+            {auth.user?.address.map((item)=> <div className="bg-[#FFFFFF] p-5 mb-5"> <AddressCard address={item} />
+            <Button
+              sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
+              size="large"
+              variant="contained"
+              onClick={() => handleDeliverToExistingAddress(item)}
             >
-              <AddressCard address={address} />
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No saved addresses found. Please fill the form below to add one.</p>
-        )}
-      </div>
+              Deliver Here
+            </Button></div>)}
+          </div>
+        </Grid>
 
-      <form onSubmit={handleSubmit}>
-        <Box className="space-y-5">
-          <div className="grid grid-cols-2 gap-5">
-            <TextField fullWidth name="firstName" label="First Name" required />
-            <TextField fullWidth name="lastName" label="Last Name" required />
-          </div>
-          <TextField fullWidth name="address" label="Address" required />
-          <div className="grid grid-cols-2 gap-5">
-            <TextField fullWidth name="city" label="City" required />
-            <TextField fullWidth name="state" label="State" required />
-          </div>
-          <div className="grid grid-cols-2 gap-5">
-            <TextField fullWidth name="postal" label="Postal Code" required />
-            <TextField fullWidth name="phoneNumber" label="Phone Number" required />
-          </div>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              px: "2.5rem",
-              py: ".7rem",
-              bgcolor: "#9155fd",
-              "&:hover": {
-                bgcolor: "#7a44f3",
-              },
-            }}
-          >
-            Deliver to this Address
-          </Button>
-        </Box>
-      </form>
+        <Grid item xs={12} lg={7} sx={{ width: { lg: "50%" }}} >
+          <Box className="border rounded-s-md shadow-md p-5 bg-[#F1EDE1]">
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="firstName"
+                    name="firstName"
+                    label="First Name"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="lastName"
+                    name="lastName"
+                    label="Last Name"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: { lg: "93%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="address"
+                    name="address"
+                    label="Address"
+                    fullWidth
+                    autoComplete="given-name"
+                    multiline
+                    rows={4}
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="city"
+                    name="city"
+                    label="City"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="state"
+                    name="state"
+                    label="State"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="postal"
+                    name="postal"
+                    label="Postal Code"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sx={{ width: { lg: "45%" }, bgcolor: 'white' }}>
+                  <TextField
+                    required
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    label="Phone Number"
+                    fullWidth
+                    autoComplete="given-name"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                <Button
+              sx={{ py: 1.5, mt: 2, bgcolor: "RGB(145 85 253)" }}
+              size="large"
+              variant="contained"
+              type="submit"
+            >
+                    Delever Here
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Grid>
+      </Grid>
     </div>
   );
 };
