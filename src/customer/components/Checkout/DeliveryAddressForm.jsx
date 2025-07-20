@@ -13,11 +13,13 @@ const DeliveryAddressForm = () => {
   const { auth } = useSelector((store) => store);
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
 
-  useEffect(() => {
-    if (!auth.user) {
-      dispatch(getUser());
-    }
-  }, [dispatch, auth.user]);
+useEffect(() => {
+  const jwt = sessionStorage.getItem("jwt");
+  if (jwt) {
+    dispatch(getUser(jwt));
+  }
+}, [dispatch]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
