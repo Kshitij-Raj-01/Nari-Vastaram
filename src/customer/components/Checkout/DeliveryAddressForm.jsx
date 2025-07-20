@@ -24,13 +24,11 @@ const DeliveryAddressForm = () => {
       mobile : data.get('phoneNumber')
     }
     const orderData = {address, navigate}
-    dispatch(createOrder(orderData))
     console.log("Address : ", address)
   }
 
   const handleDeliverToExistingAddress = (address) => {
     const orderData = { address, navigate };
-    dispatch(createOrder(orderData));
     console.log("Using saved address:", address);
   };
   
