@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import RefundPolicy from "../customer/pages/HomePage/RefundPolicy";
 import ShippingPolicy from "../customer/pages/HomePage/ShippingPolicy";
 import CancellationPolicy from "../customer/pages/HomePage/CancellationPolicy";
-import PrivacyPolicy from "../customer/pages/HomePage/PrivacyPolicy";
+import PrivacyPolicy from "../customer/pages/HomePage/PrivacyPolicyPage";
 import TermsAndConditions from "../customer/pages/HomePage/TermsAndConditions";
 
 const CustomerRouters = () => {
