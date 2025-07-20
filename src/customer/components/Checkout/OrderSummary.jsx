@@ -27,7 +27,8 @@ const isCODAvailable = allowedCities.includes(userCity);
   }, [dispatch, orderId]);
 
   const handleCheckout = () =>{
-    dispatch(createPayment(orderId))
+    dispatch(createPayment(orderId));
+    dispatch(createOrder(orderData))
   }
   
   return (
@@ -69,7 +70,8 @@ const isCODAvailable = allowedCities.includes(userCity);
             {isCODAvailable && (
   <Button
     variant="contained"
-    onClick={() => dispatch(codPayment(orderId))}
+    onClick={() => {dispatch(codPayment(orderId)); 
+    dispatch(createOrder(orderData))}}
     className="w-full" sx={{px:'2.5rem', py:'.7rem', bgcolor:'#9155fd', mt:2}}
   >
     Pay on Delivery
