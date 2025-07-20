@@ -15,11 +15,11 @@ import Profile from '../customer/components/Profile/Profile'
 import MyOrders from '../customer/components/Order/MyOrder'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RefundPolicy from "./pages/HomePage/RefundPolicy";
-import ShippingPolicy from "./pages/HomePage/ShippingPolicy";
-import CancellationPolicy from "./pages/HomePage/CancellationPolicy";
-import PrivacyPolicy from "./pages/HomePage/PrivacyPolicy";
-import TermsAndConditions from "./pages/HomePage/TermsAndConditions";
+import RefundPolicy from "../customer/pages/HomePage/RefundPolicy";
+import ShippingPolicy from "../customer/pages/HomePage/ShippingPolicy";
+import CancellationPolicy from "../customer/pages/HomePage/CancellationPolicy";
+import PrivacyPolicy from "../customer/pages/HomePage/PrivacyPolicy";
+import TermsAndConditions from "../customer/pages/HomePage/TermsAndConditions";
 
 const CustomerRouters = () => {
   return (
