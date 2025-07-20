@@ -40,7 +40,7 @@ const Footer = () => {
           <Link component={RouterLink} to="/terms-and-conditions" underline="hover" color="inherit" display="block">
             Terms & Conditions
           </Link>
-          <Link component={RouterLink} to="/return-policy" underline="hover" color="inherit" display="block">
+          <Link component={RouterLink} to="/refund-policy" underline="hover" color="inherit" display="block">
             Return & Refund Policy
           </Link>
           <Link component={RouterLink} to="/shipping-policy" underline="hover" color="inherit" display="block">
