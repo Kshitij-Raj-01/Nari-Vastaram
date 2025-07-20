@@ -27,10 +27,23 @@ const isCODAvailable = allowedCities.includes(userCity);
     }
   }, [dispatch, orderId]);
 
-  const handleCheckout = () =>{
-    dispatch(createPayment(orderId));
-    dispatch(createOrder(orderData))
-  }
+  const handleCheckout = () => {
+    if (!address) return;
+    dispatch(createOrder(address)).then((res) => {
+      if (res?.payload?._id) {
+        dispatch(createPayment(res.payload._id));
+      }
+    });
+  };
+
+  const handleCOD = () => {
+    if (!address) return;
+    dispatch(createOrder(address)).then((res) => {
+      if (res?.payload?._id) {
+        dispatch(codPayment(res.payload._id));
+      }
+    });
+  };
   
   return (
     <div>
@@ -71,8 +84,7 @@ const isCODAvailable = allowedCities.includes(userCity);
             {isCODAvailable && (
   <Button
     variant="contained"
-    onClick={() => {dispatch(codPayment(orderId)); 
-    dispatch(createOrder(orderData))}}
+    onClick={handleCOD}
     className="w-full" sx={{px:'2.5rem', py:'.7rem', bgcolor:'#9155fd', mt:2}}
   >
     Pay on Delivery
