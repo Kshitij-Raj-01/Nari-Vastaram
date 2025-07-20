@@ -15,6 +15,11 @@ import Profile from '../customer/components/Profile/Profile'
 import MyOrders from '../customer/components/Order/MyOrder'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RefundPolicy from "./pages/HomePage/RefundPolicy";
+import ShippingPolicy from "./pages/HomePage/ShippingPolicy";
+import CancellationPolicy from "./pages/HomePage/CancellationPolicy";
+import PrivacyPolicy from "./pages/HomePage/PrivacyPolicy";
+import TermsAndConditions from "./pages/HomePage/TermsAndConditions";
 
 const CustomerRouters = () => {
   return (
@@ -39,6 +44,11 @@ const CustomerRouters = () => {
             <Route path='/contact' element={<Contact/>} ></Route>
             <Route path="/profile" element={<Profile/>} />
             <Route path="/account/orders" element={<MyOrders />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         </Routes>
         <div>
       <Footer/>
