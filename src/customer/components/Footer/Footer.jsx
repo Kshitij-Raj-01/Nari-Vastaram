@@ -13,8 +13,8 @@ const Footer = () => {
           </Typography>
           <Link component={RouterLink} to="/about" underline="hover" color="inherit" display="block">
             About
-{/*           </Link>
-          <Link component={RouterLink} to="/blogs" underline="hover" color="inherit" display="block">
+          </Link>
+{/*           <Link component={RouterLink} to="/blogs" underline="hover" color="inherit" display="block">
             Blogs
           </Link> */}
         </Grid>
