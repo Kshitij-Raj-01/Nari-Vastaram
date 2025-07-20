@@ -10,7 +10,7 @@ const registerFailure = (error) => ({type:REGISTER_FAILURE, payload:error});
 export const register = (userData) => async (dispatch) => {
     dispatch(registerRequest());
     try {
-      const response = await axios.post(${API_BASE_URL}/auth/signup, userData);
+      const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
       const user = response.data;
       if (user.jwt) {
         sessionStorage.setItem("jwt", user.jwt);
@@ -32,7 +32,7 @@ const loginFailure = (error) => ({type:LOGIN_FAILURE, payload:error});
 export const login = (userData) => async(dispatch) => {
     dispatch(loginRequest())
     try{
-        const response = await axios.post(${API_BASE_URL}/auth/login, userData)
+        const response = await axios.post(`${API_BASE_URL}/auth/login`, userData)
         const user = response.data;
         if(user.jwt){
             sessionStorage.setItem("jwt", user.jwt)
@@ -50,9 +50,9 @@ const getUserFailure = (error) => ({type:GET_USER_FAILURE, payload:error});
 export const getUser = (jwt) => async(dispatch) => {
     dispatch(getUserRequest())
     try{
-        const response = await axios.get(${API_BASE_URL}/api/users/profile,{
+        const response = await axios.get(`${API_BASE_URL}/api/users/profile`,{
             headers: {
-                "Authorization" : Bearer ${jwt}
+                "Authorization" : `Bearer ${jwt}`
             }
         })
         const user = response.data;
