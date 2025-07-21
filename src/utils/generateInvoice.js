@@ -28,9 +28,11 @@ export const generateInvoice = async (order, autoDownload = false) => {
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  doc.text("Traditional Fashion & Apparel", 45, 32);
-  doc.text("Email: info@narivastaram.com", 45, 38);
-  doc.text("Phone: +91 98765 43210", 45, 44);
+  doc.text("Traditional Ladies Clothing", 45, 32);
+  doc.text("Email: support@narivastaram.com", 45, 38);
+  doc.text("Phone: +91 9942215592", 45, 44);
+  doc.text("GSTIN: 10AXWPG6000H1ZT", 45, 50); // Add GST number here
+
 
   // Invoice Title
   doc.setFontSize(28);
