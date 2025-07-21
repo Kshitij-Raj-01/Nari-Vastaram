@@ -68,7 +68,7 @@ useEffect(() => {
 
 const handleAddToCart = async () => {
   if (!user) {
-    navigate("/login?redirect=/product/" + params.productId);
+    navigate("/login");
     return;
   }
 
