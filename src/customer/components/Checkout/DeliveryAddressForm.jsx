@@ -3,7 +3,7 @@ import React from "react";
 import AddressCard from "../AddressCard/AddressCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { placeOrder } from "../../../State/Order/Action"; 
+import { createOrder } from "../../../State/Order/Action"; 
 
 const DeliveryAddressForm = () => {
   const dispatch = useDispatch();
@@ -25,13 +25,13 @@ const DeliveryAddressForm = () => {
     }
     const orderData = {address, navigate}
     console.log("Address : ", address)
-    dispatch(placeOrder(orderData));
+    dispatch(createOrder(orderData));
   }
 
   const handleDeliverToExistingAddress = (address) => {
     const orderData = { address, navigate };
     console.log("Using saved address:", address);
-    dispatch(placeOrder(orderData));
+    dispatch(createOrder(orderData));
   };
   
   return (
@@ -134,7 +134,7 @@ const DeliveryAddressForm = () => {
               variant="contained"
               type="submit"
             >
-                    Delever Here
+                    Deliver Here
                   </Button>
                 </Grid>
               </Grid>
