@@ -44,13 +44,14 @@ const RegisterForm = () => {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
-      password: data.get("password")
+      password: data.get("password"),
     };
     dispatch(register(userData));
   };
 
   return (
-    <div className="max-w-xl mx-auto sm:px-8 px-4 bg-[#FFF8E1] py-10 rounded-lg shadow-md w-full">
+    <div className="max-w-2xl mx-auto px-6 py-10 bg-[#FFF8E1] shadow-xl rounded-2xl mt-10">
+      <h2 className="text-2xl font-bold text-center text-[#8B0000] mb-6">Create Your Account</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* First Name */}
         <div>
@@ -63,7 +64,7 @@ const RegisterForm = () => {
             name="firstName"
             type="text"
             autoComplete="given-name"
-            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            className="mt-1 block w-full border border-gray-300 rounded-lg p-3 focus:ring-[#8B0000] focus:border-[#8B0000] transition"
           />
         </div>
 
@@ -78,7 +79,7 @@ const RegisterForm = () => {
             name="lastName"
             type="text"
             autoComplete="family-name"
-            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            className="mt-1 block w-full border border-gray-300 rounded-lg p-3 focus:ring-[#8B0000] focus:border-[#8B0000] transition"
           />
         </div>
 
@@ -93,7 +94,7 @@ const RegisterForm = () => {
             name="email"
             type="email"
             autoComplete="email"
-            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            className="mt-1 block w-full border border-gray-300 rounded-lg p-3 focus:ring-[#8B0000] focus:border-[#8B0000] transition"
           />
         </div>
 
@@ -108,7 +109,7 @@ const RegisterForm = () => {
             name="password"
             type="password"
             autoComplete="new-password"
-            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            className="mt-1 block w-full border border-gray-300 rounded-lg p-3 focus:ring-[#8B0000] focus:border-[#8B0000] transition"
           />
         </div>
 
@@ -116,7 +117,7 @@ const RegisterForm = () => {
         <div className="sm:col-span-2">
           <button
             type="submit"
-            className="bg-[#8B0000] hover:bg-[#FFB300] transition duration-300 text-white text-base font-semibold w-full py-3 rounded-md shadow"
+            className="bg-[#8B0000] hover:bg-[#FFB300] hover:text-black transition duration-300 text-white font-semibold w-full py-3 rounded-lg shadow"
           >
             Register
           </button>
@@ -131,10 +132,10 @@ const RegisterForm = () => {
         </div>
       )}
 
-      <div className="mt-6 flex justify-center flex-col items-center gap-2 sm:flex-row">
-        <p className="text-sm">Already have an account?</p>
+      <div className="mt-6 text-center text-sm text-[#3E3E3E]">
+        Already have an account?{" "}
         <Button onClick={() => navigate("/login")} size="small" className="text-sm">
-          Login
+          <span className="text-[#8B0000] font-semibold">Login</span>
         </Button>
       </div>
     </div>
