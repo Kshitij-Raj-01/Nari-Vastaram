@@ -24,11 +24,13 @@ const DeliveryAddressForm = () => {
     }
     const orderData = {address, navigate}
     console.log("Address : ", address)
+    dispatch(placeOrder(orderData));
   }
 
   const handleDeliverToExistingAddress = (address) => {
     const orderData = { address, navigate };
     console.log("Using saved address:", address);
+    dispatch(placeOrder(orderData));
   };
   
   return (
