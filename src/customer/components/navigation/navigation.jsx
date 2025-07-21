@@ -127,7 +127,6 @@ export const Navigation = () => {
   useEffect(() => {
     if (jwt) {
       dispatch(getUser(jwt));
-      dispatch(getCart(jwt));
     }
   }, [jwt, dispatch]);
 
