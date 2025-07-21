@@ -65,11 +65,11 @@ useEffect(() => {
   };
   
 
-  const handleAddToCart = () => {
-    const data = {productId:params.productId, size:selectedSize.name}
-    dispatch(addItemToCart(data))
-    navigate('/cart');
-  }
+const handleAddToCart = async () => {
+  const data = { productId: params.productId, size: selectedSize.name };
+  const result = await dispatch(addItemToCart(data));
+  navigate('/cart');
+};
 
   useEffect(() => {
     if (params.productId) {
