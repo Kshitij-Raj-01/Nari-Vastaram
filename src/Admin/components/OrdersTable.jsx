@@ -74,6 +74,7 @@ const OrdersTable = () => {
   };
 
   const handleDownloadInvoice = async (order) => {
+    console.log(order);
     await generateInvoice(order, true); // 💌 Download the PDF
   };
 
