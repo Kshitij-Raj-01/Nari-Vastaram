@@ -3,34 +3,22 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getUser, register } from '../../State/Auth/Action';
-// Optional: Uncomment if using react-toastify
-// import { toast } from 'react-toastify';
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-
   const { auth } = useSelector((store) => store);
   const jwt = sessionStorage.getItem("jwt");
 
-  // Fetch user profile if jwt exists
   useEffect(() => {
-    if (
-      jwt &&
-      location.pathname !== "/login" &&
-      location.pathname !== "/register"
-    ) {
+    if (jwt && !["/login", "/register"].includes(location.pathname)) {
       dispatch(getUser(jwt));
     }
   }, [jwt, auth.jwt, location.pathname]);
 
-  // Auto-redirect if user already exists
   useEffect(() => {
     if (auth.error?.includes("already exists")) {
-      // Optional toast
-      // toast.info("You're already registered, love. Please login 💖");
-
       const timeout = setTimeout(() => {
         navigate("/login");
       }, 3000);
@@ -38,7 +26,6 @@ const RegisterForm = () => {
     }
   }, [auth.error]);
 
-  // Auto-redirect to homepage if registration succeeded & user loaded
   useEffect(() => {
     if (auth.jwt && auth.user) {
       navigate("/");
@@ -47,21 +34,18 @@ const RegisterForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = new FormData(e.currentTarget);
     const userData = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
-      password: data.get("password")
+      password: data.get("password"),
     };
-
     dispatch(register(userData));
-    console.log("Registering:", userData);
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 bg-[#FFF8E1] py-10 rounded-lg shadow-md">
+    <div className="w-full max-w-2xl mx-auto p-6 sm:p-10 bg-[#FFF8E1] rounded-lg shadow-md mt-10">
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* First Name */}
         <div>
@@ -123,7 +107,7 @@ const RegisterForm = () => {
           />
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <div className="sm:col-span-2">
           <button
             type="submit"
@@ -132,28 +116,23 @@ const RegisterForm = () => {
             Register
           </button>
         </div>
+
+        {/* Error */}
+        {auth.error && (
+          <div className="sm:col-span-2 mt-2">
+            <p className="text-red-600 font-medium text-center">{auth.error}</p>
+          </div>
+        )}
       </form>
 
-      {/* Error Display */}
-      {auth.error && (
-        <div className="sm:col-span-2 mt-4">
-          <p className="text-red-600 font-medium text-center">
-            {auth.error}
-          </p>
-        </div>
-      )}
-
-      <div className="flex justify-center flex-col items-center">
-        <div className="py-3 flex items-center">
-          <p>If you already have an account</p>
-          <Button
-            onClick={() => navigate("/login")}
-            className="ml-5"
-            size="small"
-          >
+      {/* Login Prompt */}
+      <div className="text-center mt-6">
+        <p className="text-sm">
+          Already have an account?
+          <Button onClick={() => navigate("/login")} className="ml-2" size="small">
             Login
           </Button>
-        </div>
+        </p>
       </div>
     </div>
   );
