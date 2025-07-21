@@ -1,8 +1,8 @@
-import { Button } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { login, getUser } from '../../State/Auth/Action';
+import { Button } from "@mui/material";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login, getUser } from "../../State/Auth/Action";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -26,16 +26,19 @@ const LoginForm = () => {
   }, [jwt, dispatch, user]);
 
   useEffect(() => {
-    if (user?.role === "ADMIN") navigate("/admin");
-    else if (user?.role === "CUSTOMER") navigate("/");
+    if (user?.role === "ADMIN") {
+      navigate("/admin");
+    } else if (user?.role === "CUSTOMER") {
+      navigate("/");
+    }
   }, [user, navigate]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 sm:p-10 bg-[#FFF8E1] rounded-lg shadow-md mt-10">
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="max-w-xl mx-auto sm:px-8 px-4 bg-[#FFF8E1] py-10 rounded-lg shadow-md w-full">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-semibold text-[#3E3E3E] mb-1">
+          <label htmlFor="email" className="block text-sm font-semibold text-[#3E3E3E]">
             Email
           </label>
           <input
@@ -44,13 +47,13 @@ const LoginForm = () => {
             name="email"
             type="email"
             autoComplete="email"
-            className="w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
           />
         </div>
 
         {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-semibold text-[#3E3E3E] mb-1">
+          <label htmlFor="password" className="block text-sm font-semibold text-[#3E3E3E]">
             Password
           </label>
           <input
@@ -58,8 +61,8 @@ const LoginForm = () => {
             id="password"
             name="password"
             type="password"
-            autoComplete="current-password"
-            className="w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
+            autoComplete="new-password"
+            className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-[#8B0000] focus:border-[#8B0000]"
           />
         </div>
 
@@ -67,26 +70,26 @@ const LoginForm = () => {
         <div>
           <button
             type="submit"
-            className="bg-[#8B0000] hover:bg-[#FFB300] transition duration-300 text-white text-lg font-semibold w-full py-3 rounded-md shadow"
+            className="bg-[#8B0000] hover:bg-[#FFB300] transition duration-300 text-white text-base font-semibold w-full py-3 rounded-md shadow"
           >
             Login
           </button>
         </div>
-
-        {/* Error */}
-        {error && (
-          <p className="text-red-600 font-medium text-center">{error}</p>
-        )}
       </form>
 
-      {/* Register Prompt */}
-      <div className="text-center mt-6">
-        <p className="text-sm">
-          Don’t have an account?
-          <Button onClick={() => navigate("/register")} className="ml-2" size="small">
-            Register
-          </Button>
-        </p>
+      {error && (
+        <div className="mt-4">
+          <p className="text-red-600 font-medium text-center text-sm">
+            {error}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-6 flex justify-center flex-col items-center gap-2 sm:flex-row">
+        <p className="text-sm">Don't have an account?</p>
+        <Button onClick={() => navigate("/register")} size="small" className="text-sm">
+          Register
+        </Button>
       </div>
     </div>
   );
