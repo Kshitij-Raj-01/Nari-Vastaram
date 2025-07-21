@@ -21,6 +21,7 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
 
   const { product, loading, error } = useSelector((state) => state.product);
+  const { user } = useSelector((state) => state.auth);
   const [selectedSize, setSelectedSize] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
@@ -66,9 +67,17 @@ useEffect(() => {
   
 
 const handleAddToCart = async () => {
+  if (!user) {
+    navigate("/login?redirect=/product/" + params.productId);
+    return;
+  }
+
   const data = { productId: params.productId, size: selectedSize.name };
   const result = await dispatch(addItemToCart(data));
-  navigate('/cart');
+
+  if (result?.payload?.success) {
+    navigate("/cart");
+  }
 };
 
   useEffect(() => {
