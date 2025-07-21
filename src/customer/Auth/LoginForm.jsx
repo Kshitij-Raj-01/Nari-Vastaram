@@ -8,7 +8,6 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, jwt, error } = useSelector((state) => state.auth);
-  const jwt = jwt || sessionStorage.getItem("jwt");
   
   const handleSubmit = (e) => {
     e.preventDefault();
