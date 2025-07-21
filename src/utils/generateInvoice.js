@@ -67,7 +67,7 @@ export const generateInvoice = async (order, autoDownload = false) => {
   doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
   doc.text(`${order.user?.firstName ?? ""} ${order.user?.lastName ?? ""}`, 15, 78);
   doc.text(`Email: ${order.user?.email ?? "N/A"}`, 15, 85);
-  doc.text(`Phone: ${order.user?.mobile ?? "N/A"}`, 15, 92);
+  doc.text(`Phone: ${order.shippingAddress?.mobile ?? "N/A"}`, 15, 92);
   
   // Shipping Address
   if (order.shippingAddress) {
