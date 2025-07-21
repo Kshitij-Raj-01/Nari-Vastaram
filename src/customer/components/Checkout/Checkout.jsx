@@ -59,7 +59,7 @@ const Checkout = () => {
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, mb: 5 }}>
             <Button
               color="inherit"
-              disabled={activeStep === 0}
+              disabled={activeStep === 1}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
