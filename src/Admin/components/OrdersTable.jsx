@@ -195,7 +195,7 @@ const OrdersTable = () => {
                       color="secondary"
                       onClick={() => handleDownloadInvoice(item)}
                     >
-                      💌 Invoice
+                     Invoice
                     </Button>
                   </TableCell>
                 </TableRow>
