@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   confirmOrder,
@@ -24,18 +24,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { generateInvoice } from "../../utils/generateInvoice"; // 💌 Adjust path if needed
+import { generateInvoice } from "../../utils/generateInvoice";
 
 const OrdersTable = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const [menuAnchorEls, setMenuAnchorEls] = useState({});
   const dispatch = useDispatch();
   const { adminOrder } = useSelector((store) => store);
 
@@ -49,24 +41,28 @@ const OrdersTable = () => {
     adminOrder.returned,
   ]);
 
+  const handleClick = (event, orderId) => {
+    setMenuAnchorEls((prev) => ({ ...prev, [orderId]: event.currentTarget }));
+  };
+
+  const handleClose = (orderId) => {
+    setMenuAnchorEls((prev) => ({ ...prev, [orderId]: null }));
+  };
+
   const handleShipedOrder = (orderId) => {
     dispatch(shipOrder(orderId));
-    handleClose();
   };
 
   const handleConfirmedOrder = (orderId) => {
     dispatch(confirmOrder(orderId));
-    handleClose();
   };
 
   const handleDeliveredOrder = (orderId) => {
     dispatch(deliveredOrder(orderId));
-    handleClose();
   };
 
   const handleReturnedOrder = (orderId) => {
     dispatch(returnOrder(orderId));
-    handleClose();
   };
 
   const handleDeleteOrder = (orderId) => {
@@ -75,7 +71,7 @@ const OrdersTable = () => {
 
   const handleDownloadInvoice = async (order) => {
     console.log(order);
-    await generateInvoice(order, true); // 💌 Download the PDF
+    await generateInvoice(order, true); // 💌 Save the invoice
   };
 
   return (
@@ -94,7 +90,7 @@ const OrdersTable = () => {
                 <TableCell align="center">Status</TableCell>
                 <TableCell align="center">Update</TableCell>
                 <TableCell align="center">Delete</TableCell>
-                <TableCell align="center">Invoice</TableCell> {/* 💌 New */}
+                <TableCell align="center">Invoice</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -134,35 +130,56 @@ const OrdersTable = () => {
                   </TableCell>
                   <TableCell align="center">
                     <Button
-                      id="basic-button"
-                      aria-controls={open ? "basic-menu" : undefined}
+                      id={`status-button-${item._id}`}
+                      aria-controls={Boolean(menuAnchorEls[item._id]) ? `menu-${item._id}` : undefined}
                       aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
-                      onClick={handleClick}
+                      aria-expanded={Boolean(menuAnchorEls[item._id]) ? "true" : undefined}
+                      onClick={(e) => handleClick(e, item._id)}
                     >
                       Status
                     </Button>
+
                     <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
+                      id={`menu-${item._id}`}
+                      anchorEl={menuAnchorEls[item._id]}
+                      open={Boolean(menuAnchorEls[item._id])}
+                      onClose={() => handleClose(item._id)}
                       slotProps={{
                         list: {
-                          "aria-labelledby": "basic-button",
+                          "aria-labelledby": `status-button-${item._id}`,
                         },
                       }}
                     >
-                      <MenuItem onClick={() => handleConfirmedOrder(item._id)}>
+                      <MenuItem
+                        onClick={() => {
+                          handleConfirmedOrder(item._id);
+                          handleClose(item._id);
+                        }}
+                      >
                         Confirmed Order
                       </MenuItem>
-                      <MenuItem onClick={() => handleShipedOrder(item._id)}>
+                      <MenuItem
+                        onClick={() => {
+                          handleShipedOrder(item._id);
+                          handleClose(item._id);
+                        }}
+                      >
                         Shipped Order
                       </MenuItem>
-                      <MenuItem onClick={() => handleDeliveredOrder(item._id)}>
+                      <MenuItem
+                        onClick={() => {
+                          handleDeliveredOrder(item._id);
+                          handleClose(item._id);
+                        }}
+                      >
                         Delivered Order
                       </MenuItem>
-                      <MenuItem onClick={() => handleReturnedOrder(item._id)}>
+                      <MenuItem
+                        onClick={() => {
+                          handleReturnedOrder(item._id);
+                          handleClose(item._id);
+                        }}
+                      >
                         Returned Order
                       </MenuItem>
                     </Menu>
@@ -178,7 +195,7 @@ const OrdersTable = () => {
                       color="secondary"
                       onClick={() => handleDownloadInvoice(item)}
                     >
-                      Invoice
+                      💌 Invoice
                     </Button>
                   </TableCell>
                 </TableRow>
