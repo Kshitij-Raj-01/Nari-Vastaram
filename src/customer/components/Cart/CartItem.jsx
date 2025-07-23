@@ -1,34 +1,35 @@
+import React from "react";
 import { Button, IconButton } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import React from "react";
 import { useDispatch } from "react-redux";
 import { removeCartItem, updateCartItem } from "../../../State/Cart/Action";
 
-const CartItem = ({ item, isGuest }) => {
+const CartItem = ({ item, isGuest = false }) => {
   const dispatch = useDispatch();
-  const product = item.product || {};
-  const selectedSize = product.sizes?.find((size) => size.name === item?.size);
+
+  const product = isGuest ? item.product : item?.product;
+  const size = isGuest ? item.size : item?.size;
+  const quantity = isGuest ? item.quantity : item?.quantity;
+
+  const selectedSize = product?.sizes?.find((s) => s.name === size);
   const availableQty = selectedSize?.quantity || 0;
 
   const handleUpdateCartItem = (num) => {
     if (isGuest) {
       const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
       const updatedCart = guestCart.map((ci) =>
-        ci.productId === item.productId && ci.size === item.size
+        ci.productId === product._id && ci.size === size
           ? { ...ci, quantity: Math.max(1, ci.quantity + num) }
           : ci
       );
       localStorage.setItem("guest_cart", JSON.stringify(updatedCart));
       window.location.reload();
     } else {
-      const cartItemId = item._id;
-      if (!cartItemId) return;
-
       dispatch(
         updateCartItem({
-          cartItemId,
-          data: { quantity: item.quantity + num },
+          cartItemId: item._id,
+          data: { quantity: quantity + num },
         })
       );
     }
@@ -38,7 +39,7 @@ const CartItem = ({ item, isGuest }) => {
     if (isGuest) {
       const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
       const updatedCart = guestCart.filter(
-        (ci) => !(ci.productId === item.productId && ci.size === item.size)
+        (ci) => !(ci.productId === product._id && ci.size === size)
       );
       localStorage.setItem("guest_cart", JSON.stringify(updatedCart));
       window.location.reload();
@@ -60,7 +61,7 @@ const CartItem = ({ item, isGuest }) => {
 
         <div className="ml-5 space-y-1">
           <p className="font-semibold">{product?.title}</p>
-          <p className="opacity-70">Size: {item?.size}</p>
+          <p className="opacity-70">Size: {size}</p>
           <p className="opacity-70 mt-2">Seller: {product?.brand}</p>
           <div className="flex space-x-5 items-center pt-6">
             <p className="font-semibold">₹{product?.discountedPrice}</p>
@@ -76,22 +77,19 @@ const CartItem = ({ item, isGuest }) => {
         <div className="flex items-center space-x-2">
           <IconButton
             onClick={() => handleUpdateCartItem(-1)}
-            disabled={item.quantity <= 1}
+            disabled={quantity <= 1}
           >
             <RemoveCircleOutlineIcon />
           </IconButton>
-
-          <span className="py-1 px-7 border rounded-sm">{item.quantity}</span>
-
+          <span className="py-1 px-7 border rounded-sm">{quantity}</span>
           <IconButton
             sx={{ color: "blueviolet" }}
             onClick={() => handleUpdateCartItem(1)}
-            disabled={item.quantity >= availableQty}
+            disabled={quantity >= availableQty}
           >
             <AddCircleOutlineIcon />
           </IconButton>
         </div>
-
         <div>
           <Button onClick={handleRemoveCartItem} sx={{ color: "blueviolet" }}>
             Remove
@@ -99,7 +97,7 @@ const CartItem = ({ item, isGuest }) => {
         </div>
       </div>
 
-      {item.quantity >= availableQty && (
+      {quantity >= availableQty && (
         <p className="text-sm text-red-500 mt-2">
           Only {availableQty} left in stock
         </p>
