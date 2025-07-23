@@ -9,8 +9,8 @@ import { api } from "../../../config/apiConfig";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { cart, auth } = useSelector((store) => store);
 
+  const { cart, auth } = useSelector((store) => store);
   const [guestCartItems, setGuestCartItems] = useState([]);
   const [guestCartTotals, setGuestCartTotals] = useState({
     totalPrice: 0,
@@ -25,7 +25,7 @@ const Cart = () => {
   const calculateGuestCartTotals = (items) => {
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
-    let totalDiscounts = 0;
+    let discounts = 0;
 
     for (const item of items) {
       const price = item.product?.price || 0;
@@ -34,14 +34,10 @@ const Cart = () => {
 
       totalPrice += price * quantity;
       totalDiscountedPrice += discounted * quantity;
-      totalDiscounts += (price - discounted) * quantity;
+      discounts += (price - discounted) * quantity;
     }
 
-    return {
-      totalPrice,
-      totalDiscountedPrice,
-      discounts: totalDiscounts,
-    };
+    return { totalPrice, totalDiscountedPrice, discounts };
   };
 
   useEffect(() => {
@@ -59,14 +55,14 @@ const Cart = () => {
               product: res.data,
             };
           } catch (err) {
-            console.error("Error fetching guest product", err);
+            console.error("Error fetching product", err);
             return null;
           }
         })
-      ).then((fullItems) => {
-        const filteredItems = fullItems.filter(Boolean);
-        setGuestCartItems(filteredItems);
-        setGuestCartTotals(calculateGuestCartTotals(filteredItems));
+      ).then((items) => {
+        const filtered = items.filter((i) => i !== null);
+        setGuestCartItems(filtered);
+        setGuestCartTotals(calculateGuestCartTotals(filtered));
       });
     }
   }, [auth.user]);
@@ -81,53 +77,49 @@ const Cart = () => {
     : guestCartTotals;
 
   return (
-    <div>
-      <div className="lg:grid grid-cols-3 lg:px-16 relative">
-        {/* Cart Items */}
-        <div className="col-span-2 space-y-5">
-          {displayItems.length > 0 ? (
-            displayItems.map((item, index) => (
-              <CartItem key={index} item={item} isGuest={!auth.user} />
-            ))
-          ) : (
-            <p className="text-center p-10 text-gray-600 italic">
-              Your cart is empty... add a little love 🛒💖
-            </p>
-          )}
-        </div>
+    <div className="lg:grid grid-cols-3 lg:px-16 relative">
+      <div className="col-span-2 space-y-5">
+        {displayItems.length > 0 ? (
+          displayItems.map((item, index) => (
+            <CartItem key={index} item={item} isGuest={!auth.user} />
+          ))
+        ) : (
+          <p className="text-center p-10 text-gray-600 italic">
+            Your cart is empty... add a little love 🛒💖
+          </p>
+        )}
+      </div>
 
-        {/* Price Summary */}
-        <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0">
-          <div className="border p-5 bg-[#F1EDE1]">
-            <p className="uppercase font-bold opacity-60 pb-4">Price Details</p>
-            <div className="space-y-3 font-semibold mb-10">
-              <div className="flex justify-between pt-3 text-black">
-                <span>Price</span>
-                <span>₹{totals.totalPrice}</span>
-              </div>
-              <div className="flex justify-between pt-3">
-                <span>Discount</span>
-                <span className="text-green-600">- ₹{totals.discounts}</span>
-              </div>
-              <div className="flex justify-between pt-3 text-black">
-                <span>Delivery Charges</span>
-                <span className="text-green-600">Free</span>
-              </div>
-              <hr />
-              <div className="flex justify-between pt-3 text-black font-bold">
-                <span>Total Amount</span>
-                <span className="text-green-600">₹{totals.totalDiscountedPrice}</span>
-              </div>
+      <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0">
+        <div className="border p-5 bg-[#F1EDE1]">
+          <p className="uppercase font-bold opacity-60 pb-4">Price Details</p>
+          <div className="space-y-3 font-semibold mb-10">
+            <div className="flex justify-between pt-3 text-black">
+              <span>Price</span>
+              <span>₹{totals.totalPrice}</span>
             </div>
-            <Button
-              onClick={handleCheckout}
-              variant="contained"
-              className="w-full mt-5"
-              sx={{ px: "2.5rem", py: ".7rem", bgcolor: "#9155fd" }}
-            >
-              Checkout
-            </Button>
+            <div className="flex justify-between pt-3">
+              <span>Discount</span>
+              <span className="text-green-600">- ₹{totals.discounts}</span>
+            </div>
+            <div className="flex justify-between pt-3 text-black">
+              <span>Delivery Charges</span>
+              <span className="text-green-600">Free</span>
+            </div>
+            <hr />
+            <div className="flex justify-between pt-3 text-black font-bold">
+              <span>Total Amount</span>
+              <span className="text-green-600">₹{totals.totalDiscountedPrice}</span>
+            </div>
           </div>
+          <Button
+            onClick={handleCheckout}
+            variant="contained"
+            className="w-full mt-5"
+            sx={{ px: "2.5rem", py: ".7rem", bgcolor: "#9155fd" }}
+          >
+            Checkout
+          </Button>
         </div>
       </div>
     </div>
