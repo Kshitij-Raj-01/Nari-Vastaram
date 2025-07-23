@@ -9,8 +9,8 @@ import { api } from "../../../config/apiConfig";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { cart, auth } = useSelector((store) => store);
+
   const [guestCartItems, setGuestCartItems] = useState([]);
   const [guestCartTotals, setGuestCartTotals] = useState({
     totalPrice: 0,
@@ -22,7 +22,6 @@ const Cart = () => {
     navigate("/checkout?step=2");
   };
 
-  // Helper for guest totals
   const calculateGuestCartTotals = (items) => {
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
@@ -47,7 +46,6 @@ const Cart = () => {
     } else {
       const guestItems = JSON.parse(localStorage.getItem("guest_cart")) || [];
 
-      // Fetch full product details for guest items
       Promise.all(
         guestItems.map(async (item) => {
           const res = await api.get(`/api/products/${item.productId}`);
@@ -75,18 +73,30 @@ const Cart = () => {
   return (
     <div>
       <div className="lg:grid grid-cols-3 lg:px-16 relative">
-        {/* Cart Items */}
         <div className="col-span-2 space-y-5">
           {displayItems.length > 0 ? (
             displayItems.map((item, index) => (
-              <CartItem key={index} item={auth.user ? item : item.product} />
+              <CartItem
+                key={index}
+                item={
+                  auth.user
+                    ? item
+                    : {
+                        ...item.product,
+                        selectedSize: item.size,
+                        quantity: item.quantity,
+                      }
+                }
+                isGuest={!auth.user}
+              />
             ))
           ) : (
-            <p className="text-center p-10 text-gray-600 italic">Your cart is empty... add a little love 🛒💖</p>
+            <p className="text-center p-10 text-gray-600 italic">
+              Your cart is empty... add a little love 🛒💖
+            </p>
           )}
         </div>
 
-        {/* Price Summary */}
         <div className="px-5 sticky top-0 h-[100vh] mt-5 lg:mt-0">
           <div className="border p-5 bg-[#F1EDE1]">
             <p className="uppercase font-bold opacity-60 pb-4">Price Details</p>
