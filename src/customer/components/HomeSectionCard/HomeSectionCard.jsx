@@ -18,14 +18,10 @@ function HomeSectionCard({ product }) {
           alt={product.title}
         />
 
-        {/* Discount Badge */}
+        {/* Discount Percent Tag */}
         {!isSoldOut && product.discountPercent > 0 && (
-          <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-lg z-10">
-            <p className="leading-tight text-center">
-              ₹{product.discountedPrice} <br />
-              <span className="line-through text-[9px] md:text-[10px]">₹{product.price}</span> <br />
-              <span className="text-yellow-300">{product.discountPercent}% OFF</span>
-            </p>
+          <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-md z-10">
+            {product.discountPercent}% OFF
           </div>
         )}
 
@@ -47,6 +43,17 @@ function HomeSectionCard({ product }) {
         <p className="text-xs md:text-sm text-gray-600 line-clamp-1">
           {product.title}
         </p>
+        {/* Pricing Below Title */}
+        {!isSoldOut && (
+          <div className="mt-1">
+            <span className="text-sm font-bold text-gray-800">
+              ₹{product.discountedPrice}
+            </span>{" "}
+            <span className="text-xs line-through text-gray-500 ml-1">
+              ₹{product.price}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
