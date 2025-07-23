@@ -46,10 +46,10 @@ function HomeSectionCard({ product }) {
         {/* Pricing Below Title */}
         {!isSoldOut && (
           <div className="mt-1">
-            <span className="text-sm font-bold text-gray-800">
+            <span className="text-sm font-bold text-green">
               ₹{product.discountedPrice}
             </span>{" "}
-            <span className="text-xs line-through text-gray-500 ml-1">
+            <span className="text-xs line-through text-red ml-1">
               ₹{product.price}
             </span>
           </div>
