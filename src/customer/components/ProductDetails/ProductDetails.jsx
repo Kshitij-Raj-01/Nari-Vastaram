@@ -67,18 +67,42 @@ useEffect(() => {
   
 
 const handleAddToCart = async () => {
-  if (!user) {
-    navigate("/login");
+  const item = {
+    productId: product._id,
+    size: selectedSize?.name,
+    quantity: 1,
+  };
+
+  if (!selectedSize) {
+    alert("Please select a size.");
     return;
   }
 
-  const data = { productId: params.productId, size: selectedSize.name };
-  const result = await dispatch(addItemToCart(data));
+  if (!user) {
+    // Guest user logic: use localStorage
+    const existingCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+    const alreadyInCart = existingCart.find(
+      (p) => p.productId === item.productId && p.size === item.size
+    );
 
+    if (alreadyInCart) {
+      alert("This item is already in your cart, sweetheart 💌");
+    } else {
+      localStorage.setItem("guest_cart", JSON.stringify([...existingCart, item]));
+      alert("Added to cart! You can always come back for more 🌸");
+    }
+
+    navigate("/cart");
+    return;
+  }
+
+  // Logged-in user logic
+  const result = await dispatch(addItemToCart(item));
   if (result?.payload?.success) {
     navigate("/cart");
   }
 };
+
 
   useEffect(() => {
     if (params.productId) {
