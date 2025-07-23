@@ -17,8 +17,21 @@ function HomeSectionCard({ product }) {
           src={product.imageUrl}
           alt={product.title}
         />
+
+        {/* Discount Badge */}
+        {!isSoldOut && product.discountPercent > 0 && (
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded shadow-lg z-10">
+            <p className="leading-tight text-center">
+              ₹{product.discountedPrice} <br />
+              <span className="line-through text-[9px] md:text-[10px]">₹{product.price}</span> <br />
+              <span className="text-yellow-300">{product.discountPercent}% OFF</span>
+            </p>
+          </div>
+        )}
+
+        {/* Sold Out Overlay */}
         {isSoldOut && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
             <p className="text-white text-md md:text-lg font-bold tracking-wide">
               Sold Out
             </p>
