@@ -2,6 +2,8 @@ import { Box, Modal, Tabs, Tab } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart as addToUserCart } from '../../../State/Cart/Action';
 
 const style = {
   position: 'absolute',
@@ -19,10 +21,24 @@ const style = {
 
 const AuthModal = ({ open, handleClose, defaultTab = "login" }) => {
   const [value, setValue] = useState(defaultTab === "register" ? 1 : 0);
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // Merge guest cart items to user cart after login/register
+  useEffect(() => {
+    if (auth.user) {
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+      guestCart.forEach((item) => {
+        dispatch(addToUserCart(item.productId, item.size, item.quantity));
+      });
+      localStorage.removeItem("guest_cart"); // clear guest cart after sync
+      handleClose(); // close modal after success
+    }
+  }, [auth.user]);
 
   useEffect(() => {
     setValue(defaultTab === "register" ? 1 : 0);
