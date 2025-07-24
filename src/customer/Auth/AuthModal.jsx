@@ -1,5 +1,5 @@
 import { Box, Modal, Tabs, Tab } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,13 +26,15 @@ const AuthModal = ({ open, handleClose, defaultTab = "login" }) => {
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
 
+  const hasMergedCart = useRef(false); // 💖 to ensure one-time merge only
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  // 💕 Merge guest cart items to user cart after login/register
+  // 💞 Merge guest cart into user cart once after login
   useEffect(() => {
-    if (auth.user) {
+    if (auth.user && !hasMergedCart.current) {
       const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
 
       if (guestCart.length > 0) {
@@ -50,13 +52,16 @@ const AuthModal = ({ open, handleClose, defaultTab = "login" }) => {
           .then(() => {
             localStorage.removeItem("guest_cart");
             dispatch(getCart());
+            hasMergedCart.current = true; // 💍 prevent future merges
           })
           .catch((err) => {
             console.error("Merge cart failed:", err);
           });
+      } else {
+        hasMergedCart.current = true; // ✅ even if guestCart is empty
       }
 
-      handleClose(); // 💫 Close the modal after successful login
+      handleClose(); // ✨ Close modal after login
     }
   }, [auth.user]);
 
