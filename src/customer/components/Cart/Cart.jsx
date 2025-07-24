@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../../State/Cart/Action";
 import { api } from "../../../config/apiConfig";
+import AuthModal from "../../Auth/AuthModal";
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { cart, auth } = useSelector((store) => store);
+  const [OpenAuthModal, setOpenAuthModal] = useState(false);
   const [guestCartItems, setGuestCartItems] = useState([]);
   const [guestCartTotals, setGuestCartTotals] = useState({
     totalPrice: 0,
@@ -18,8 +20,20 @@ const Cart = () => {
     discounts: 0,
   });
 
+    const handleClose = () => {
+    setOpenAuthModal(false);
+  };
+
+  const handleOpen = () => {
+    setOpenAuthModal(true);
+  };
+
   const handleCheckout = () => {
-    navigate("/checkout?step=2");
+    if(auth.user){
+      navigate("/checkout?step=2");
+    } else{
+      handleOpen();
+    }
   };
 
   const calculateGuestCartTotals = (items) => {
