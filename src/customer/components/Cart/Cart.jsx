@@ -13,6 +13,7 @@ const Cart = () => {
 
   const { cart, auth } = useSelector((store) => store);
   const [OpenAuthModal, setOpenAuthModal] = useState(false);
+  const [defaultTab, setDefaultTab] = useState("register"); // default to Register
   const [guestCartItems, setGuestCartItems] = useState([]);
   const [guestCartTotals, setGuestCartTotals] = useState({
     totalPrice: 0,
@@ -20,18 +21,19 @@ const Cart = () => {
     discounts: 0,
   });
 
-    const handleClose = () => {
+  const handleClose = () => {
     setOpenAuthModal(false);
   };
 
   const handleOpen = () => {
+    setDefaultTab("register");
     setOpenAuthModal(true);
   };
 
   const handleCheckout = () => {
-    if(auth.user){
+    if (auth.user) {
       navigate("/checkout?step=2");
-    } else{
+    } else {
       handleOpen();
     }
   };
@@ -57,6 +59,8 @@ const Cart = () => {
   useEffect(() => {
     if (auth.user) {
       dispatch(getCart());
+      // if user just logged in via modal, redirect to checkout
+      navigate("/checkout?step=2");
     } else {
       const guestItems = JSON.parse(localStorage.getItem("guest_cart")) || [];
 
@@ -79,7 +83,7 @@ const Cart = () => {
         setGuestCartTotals(calculateGuestCartTotals(filtered));
       });
     }
-  }, [auth.user]);
+  }, [auth.user]); // 💡 rerun if auth.user changes
 
   const displayItems = auth.user ? cart.cart?.cartItems || [] : guestCartItems;
   const totals = auth.user
@@ -136,6 +140,13 @@ const Cart = () => {
           </Button>
         </div>
       </div>
+
+      {/* 💖 AuthModal for sweet sign-in or sign-up */}
+      <AuthModal
+        open={OpenAuthModal}
+        handleClose={handleClose}
+        defaultTab={defaultTab}
+      />
     </div>
   );
 };
