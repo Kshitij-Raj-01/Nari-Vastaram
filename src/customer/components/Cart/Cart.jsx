@@ -49,7 +49,7 @@ const Cart = () => {
       Promise.all(
         guestItems.map(async (item) => {
           try {
-            const res = await api.get(`/api/products/${item.productId}`);
+            const res = await api.get(`/api/products/id/${item.productId}`);
             return {
               ...item,
               product: res.data,
