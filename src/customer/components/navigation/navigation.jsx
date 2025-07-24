@@ -82,6 +82,7 @@ export const Navigation = () => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [OpenAuthModal, setOpenAuthModal] = useState(false);
+  const [guestCartCount, setGuestCartCount] = useState(0);
 
   const jwt = sessionStorage.getItem("jwt");
   const { auth, cart } = useSelector((store) => store);
@@ -89,8 +90,38 @@ export const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const totalCartItems =
-    cart.cartItems?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+    const getGuestCartCount = () => {
+    const cart = localStorage.getItem("cart");
+    if (!cart) return 0;
+
+    try {
+      const items = JSON.parse(cart);
+      return items.reduce((sum, item) => sum + item.quantity, 0);
+    } catch (err) {
+      console.error("Failed to parse guest cart:", err);
+      return 0;
+    }
+  };
+
+   useEffect(() => {
+    const updateGuestCartCount = () => {
+      const count = getGuestCartCount();
+      setGuestCartCount(count);
+    };
+
+     updateGuestCartCount();
+
+    // Listen for external cart updates (other tabs or manually triggered)
+    window.addEventListener("storage", updateGuestCartCount);
+
+     return () => {
+      window.removeEventListener("storage", updateGuestCartCount);
+    };
+  }, []);
+
+  const totalCartItems = jwt
+    ? cart?.cartItems?.reduce((sum, item) => sum + item.quantity, 0) || 0
+    : guestCartCount;
 
   const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.name}`);
