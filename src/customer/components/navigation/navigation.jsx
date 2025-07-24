@@ -91,7 +91,7 @@ export const Navigation = () => {
   const location = useLocation();
 
     const getGuestCartCount = () => {
-    const cart = localStorage.getItem("cart");
+    const cart = localStorage.getItem("guest_cart");
     if (!cart) return 0;
 
     try {
