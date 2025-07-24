@@ -3,12 +3,9 @@ import React, { useEffect, useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { addItemToCart as addToUserCart } from "../../State/Cart/Action";
 import { getCart } from "../../State/Cart/Action";
 
-
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
 
 const style = {
   position: 'absolute',
@@ -33,37 +30,35 @@ const AuthModal = ({ open, handleClose, defaultTab = "login" }) => {
     setValue(newValue);
   };
 
-  // Merge guest cart items to user cart after login/register
+  // 💕 Merge guest cart items to user cart after login/register
   useEffect(() => {
-  if (auth.user) {
-    const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
+    if (auth.user) {
+      const guestCart = JSON.parse(localStorage.getItem("guest_cart")) || [];
 
-    if (guestCart.length > 0) {
-      // Send to backend for merging
-      const token = sessionStorage.getItem("jwt");
+      if (guestCart.length > 0) {
+        const token = sessionStorage.getItem("jwt");
 
-      fetch(`${API_BASE_URL/api/cart/merge`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ items: guestCart }),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          localStorage.removeItem("guest_cart");
-            dispatch(getCart());
+        fetch(`${API_BASE_URL}/api/cart/merge`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ items: guestCart }),
         })
-        .catch((err) => {
-          console.error("Merge cart failed:", err);
-        });
+          .then((res) => res.json())
+          .then(() => {
+            localStorage.removeItem("guest_cart");
+            dispatch(getCart());
+          })
+          .catch((err) => {
+            console.error("Merge cart failed:", err);
+          });
+      }
+
+      handleClose(); // 💫 Close the modal after successful login
     }
-
-    handleClose(); // Close the modal
-  }
-}, [auth.user]);
-
+  }, [auth.user]);
 
   useEffect(() => {
     setValue(defaultTab === "register" ? 1 : 0);
