@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart as addToUserCart } from '../../../State/Cart/Action';
+import { addToCart as addToUserCart } from '../../State/Cart/Action';
 
 const style = {
   position: 'absolute',
