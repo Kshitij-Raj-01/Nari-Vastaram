@@ -13,7 +13,8 @@ const Cart = () => {
 
   const { cart, auth } = useSelector((store) => store);
   const [OpenAuthModal, setOpenAuthModal] = useState(false);
-  const [defaultTab, setDefaultTab] = useState("register"); // default to Register
+  const [defaultTab, setDefaultTab] = useState("register");
+  const [wasGuest, setWasGuest] = useState(false);
   const [guestCartItems, setGuestCartItems] = useState([]);
   const [guestCartTotals, setGuestCartTotals] = useState({
     totalPrice: 0,
@@ -21,9 +22,7 @@ const Cart = () => {
     discounts: 0,
   });
 
-  const handleClose = () => {
-    setOpenAuthModal(false);
-  };
+  const handleClose = () => setOpenAuthModal(false);
 
   const handleOpen = () => {
     setDefaultTab("register");
@@ -34,6 +33,7 @@ const Cart = () => {
     if (auth.user) {
       navigate("/checkout?step=2");
     } else {
+      setWasGuest(true);
       handleOpen();
     }
   };
@@ -59,8 +59,12 @@ const Cart = () => {
   useEffect(() => {
     if (auth.user) {
       dispatch(getCart());
-      // if user just logged in via modal, redirect to checkout
-      navigate("/checkout?step=2");
+
+      if (wasGuest) {
+        setOpenAuthModal(false);
+        navigate("/checkout?step=2");
+        setWasGuest(false);
+      }
     } else {
       const guestItems = JSON.parse(localStorage.getItem("guest_cart")) || [];
 
@@ -83,7 +87,7 @@ const Cart = () => {
         setGuestCartTotals(calculateGuestCartTotals(filtered));
       });
     }
-  }, [auth.user]); // 💡 rerun if auth.user changes
+  }, [auth.user]);
 
   const displayItems = auth.user ? cart.cart?.cartItems || [] : guestCartItems;
   const totals = auth.user
@@ -127,7 +131,9 @@ const Cart = () => {
             <hr />
             <div className="flex justify-between pt-3 text-black font-bold">
               <span>Total Amount</span>
-              <span className="text-green-600">₹{totals.totalDiscountedPrice}</span>
+              <span className="text-green-600">
+                ₹{totals.totalDiscountedPrice}
+              </span>
             </div>
           </div>
           <Button
@@ -141,7 +147,7 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* 💖 AuthModal for sweet sign-in or sign-up */}
+      {/* 💞 Modal for signing in or falling in love */}
       <AuthModal
         open={OpenAuthModal}
         handleClose={handleClose}
