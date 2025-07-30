@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- 💖 Home -->
+  <url>
+    <loc>https://www.narivastaram.com/</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- 🛍️ Product Categories (dynamic routing used, add main paths) -->
+  <url>
+    <loc>https://www.narivastaram.com/women/style/All%20Kurtis</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/women/occasion/Festive%20Wear</loc>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 🧡 Product Details (you may want to dynamically generate these later) -->
+  <!-- Example static route -->
+  <url>
+    <loc>https://www.narivastaram.com/product/687aa70fc8518c0c76f014b5</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- 🛒 Cart -->
+  <url>
+    <loc>https://www.narivastaram.com/cart</loc>
+    <priority>0.70</priority>
+  </url>
+
+
+  <!-- 💃 About & Contact -->
+  <url>
+    <loc>https://www.narivastaram.com/about</loc>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/contact</loc>
+    <priority>0.60</priority>
+  </url>
+
+  <!-- 👩‍🦰 Profile -->
+  <url>
+    <loc>https://www.narivastaram.com/profile</loc>
+    <priority>0.50</priority>
+  </url>
+
+  <!-- 📜 Policies -->
+  <url>
+    <loc>https://www.narivastaram.com/refund-policy</loc>
+    <priority>0.40</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/shipping-policy</loc>
+    <priority>0.40</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/cancellation-policy</loc>
+    <priority>0.40</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/privacy-policy</loc>
+    <priority>0.40</priority>
+  </url>
+  <url>
+    <loc>https://www.narivastaram.com/terms-and-conditions</loc>
+    <priority>0.40</priority>
+  </url>
+
+</urlset>
