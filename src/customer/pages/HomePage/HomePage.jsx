@@ -5,7 +5,6 @@ import axios from 'axios';
 import { API_BASE_URL } from '../../../config/apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart } from '../../../State/Cart/Action';
-import HeroSection from '../../components/HeroSection/HeroSection';
 
 function HomePage() {
   const [products, setProducts] = useState([]);
@@ -34,7 +33,6 @@ function HomePage() {
 
   return (
     <div className="mt-[-2.5rem]">
-      <HeroSection/>
       <MainCarousel />
 
       <div className="space-y-10 py-20 flex flex-col justify-center px-5 lg:px-10 bg-[#FFE0BC]">
