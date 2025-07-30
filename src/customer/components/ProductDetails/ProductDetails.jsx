@@ -92,6 +92,22 @@ const handleAddToCart = async () => {
       alert("Added to cart! You can always come back for more 🌸");
     }
 
+    window.gtag('event', 'add_to_cart', {
+      currency: 'INR',
+      value: product.discountedPrice || product.price,
+      items: [
+        {
+          item_id: product._id,
+          item_name: product.title,
+          item_category: product.category,
+          quantity: 1,
+          item_variant: selectedSize?.name,
+        },
+      ],
+    });
+    
+    
+
     navigate("/cart");
     return;
   }
@@ -112,6 +128,22 @@ const handleAddToCart = async () => {
 
   useEffect(() => {
     setSelectedSize(null); // clear selection when product changes
+  }, [product]);
+
+  useEffect(() => {
+    if (product?._id) {
+      window.gtag('event', 'view_item', {
+        currency: 'INR',
+        value: product.discountedPrice || product.price,
+        items: [
+          {
+            item_id: product._id,
+            item_name: product.title,
+            item_category: product.category,
+          },
+        ],
+      });
+    }
   }, [product]);
 
   if (loading || !product) {
