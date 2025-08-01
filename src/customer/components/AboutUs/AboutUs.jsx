@@ -11,7 +11,7 @@ const teamMembers = [
   },
   {
     name: "Ujjwal Raj",
-    role: "CEO",
+    role: "Co-Founder and CEO",
     image: "https://res.cloudinary.com/dg2rjn4qj/image/upload/v1752927838/WhatsApp_Image_2025-07-19_at_17.53.33_mxkd3n.jpg",
   },
   {
