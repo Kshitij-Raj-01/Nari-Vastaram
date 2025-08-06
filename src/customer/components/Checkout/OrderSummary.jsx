@@ -14,9 +14,8 @@ const OrderSummary = () => {
   const searchParams = new URLSearchParams(location.search);
   const orderId = searchParams.get("order_id");
 
-  const allowedCities = ["patna", "bihar sharif"];
   const userCity = order.order?.shippingAddress?.city?.toLowerCase();
-  const isCODAvailable = allowedCities.includes(userCity);
+  const isCODAvailable = true;
 
   useEffect(() => {
     if (orderId) {
