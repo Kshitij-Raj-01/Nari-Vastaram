@@ -73,7 +73,7 @@ export const generateInvoice = async (order, autoDownload = false) => {
   if (order.shippingAddress) {
     doc.text("Shipping Address:", 15, 102);
     doc.text(`${order.shippingAddress.streetAddress ?? ""}`, 15, 109);
-    doc.text(`${order.shippingAddress.city ?? ""}, ${order.shippingAddress.state ?? ""} ${order.shippingAddress.zipCode ?? ""}`, 15, 116);
+    doc.text(`${order.shippingAddress.city ?? ""}, ${order.shippingAddress.state ?? ""} ${order.shippingAddress.pinCode ?? ""}`, 15, 120);
   }
 
   // Order Status
