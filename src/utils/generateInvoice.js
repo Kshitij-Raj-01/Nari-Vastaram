@@ -70,11 +70,24 @@ export const generateInvoice = async (order, autoDownload = false) => {
   doc.text(`Phone: ${order.shippingAddress?.mobile ?? "N/A"}`, 15, 92);
   
   // Shipping Address
-  if (order.shippingAddress) {
-    doc.text("Shipping Address:", 15, 102);
-    doc.text(`${order.shippingAddress.streetAddress ?? ""}`, 15, 109);
-    doc.text(`${order.shippingAddress.city ?? ""}, ${order.shippingAddress.state ?? ""} ${order.shippingAddress.pinCode ?? ""}`, 15, 120);
-  }
+if (order.shippingAddress) {
+  doc.text("Shipping Address:", 15, 102);
+
+  const addressLines = (order.shippingAddress.streetAddress ?? "").split('\n');
+  let y = 109;
+
+  addressLines.forEach(line => {
+    doc.text(line.trim(), 15, y);
+    y += 8; // move down for next line
+  });
+
+  doc.text(
+    `${order.shippingAddress.city ?? ""}, ${order.shippingAddress.state ?? ""} ${order.shippingAddress.pinCode ?? ""}`,
+    15,
+    y + 5
+  );
+}
+
 
   // Order Status
   doc.setFontSize(10);
