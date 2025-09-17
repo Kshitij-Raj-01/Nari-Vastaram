@@ -1,5 +1,8 @@
 export const MainCarouselData = [
     {
-        image : "/assets/Ganesh Chaturthi Banner.mp4"
+        image : "/assets/Durga Puja Banner.mp4"
+    },
+    {
+        image : "/assets/Durga Puja Banner.jpeg"
     }
 ]
